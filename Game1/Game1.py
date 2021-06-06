@@ -162,7 +162,7 @@ def drawBackground():
 
 ''' 兔子射击 '''
 ''' Control rabbit shooting'''
-def shooting():
+def shoot():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -209,7 +209,7 @@ def main():
         countDown()
         # --退出与射击
         # --Control quit and shooting
-        shooting()
+        shoot()
         # --更新对象状态
         # --update objects
         updateBunny()
