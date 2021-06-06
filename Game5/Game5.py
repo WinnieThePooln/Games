@@ -42,7 +42,7 @@ def main(cfg):
     is_quit_game = gameEndIterface(screen, cfg, is_win)
     return is_quit_game
 
-
+'''加载'''
 '''run'''
 if __name__ == '__main__':
     while True:
