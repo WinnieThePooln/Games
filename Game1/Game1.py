@@ -56,6 +56,7 @@ def initGame():
             game_sounds[key] = pygame.mixer.Sound(value)
 
 '''数据初始化'''
+'''Initialize global variables'''
 def initData():
     global  font
     font = pygame.font.Font(None, 24)
@@ -83,12 +84,16 @@ def initData():
     # 游戏主循环, running变量会跟踪游戏是否结束, exitcode变量会跟踪玩家是否胜利.
     clock = pygame.time.Clock()
 
+'''更新弓箭状态'''
+'''Update arrow status'''
 def updateArrow():
     # --更新弓箭
     for arrow in arrow_sprites_group:
         if arrow.update(cfg.SCREENSIZE):
             arrow_sprites_group.remove(arrow)
 
+'''更新兔子'''
+'''Update the status of the bunny, the bunny can move in four directions'''
 def updateBunny():
     # ----移动兔子
     key_pressed = pygame.key.get_pressed()
@@ -101,6 +106,8 @@ def updateBunny():
     elif key_pressed[pygame.K_d]:
         bunny.move(cfg.SCREENSIZE, 'right')
 
+'''更新坏人状态'''
+'''Update bad guy status,the bad guys move from right to left'''
 def updateBadguy():
     # --更新獾
     global  badtimer,badtimer1,badguy_sprites_group,healthvalue
@@ -116,6 +123,8 @@ def updateBadguy():
             healthvalue -= random.randint(4, 8)
             badguy_sprites_group.remove(badguy)
 
+'''判定箭是否击中坏人 '''
+'''Determine if the arrow hit the bad guy'''
 def arrowHitBadguy():
     global  badguy_sprites_group,arrow_sprites_group
     for arrow in arrow_sprites_group:
@@ -126,6 +135,8 @@ def arrowHitBadguy():
                 badguy_sprites_group.remove(badguy)
                 acc_record[0] += 1
 
+'''在屏幕中画出对象'''
+'''Draw objects on the screen'''
 def drawObjects():
     # --画出弓箭
     arrow_sprites_group.draw(screen)
@@ -138,7 +149,8 @@ def drawObjects():
     for i in range(healthvalue):
         screen.blit(game_images.get('health'), (i + 8, 8))
 
-
+'''在屏幕中画出背景 '''
+'''Draw the background on the screen '''
 def drawBackground():
     # --在给屏幕画任何东西之前用黑色进行填充
     screen.fill(0)
@@ -148,6 +160,8 @@ def drawBackground():
             screen.blit(game_images['grass'], (x * 100, y * 100))
     for i in range(4): screen.blit(game_images['castle'], (0, 30 + 105 * i))
 
+''' 兔子射击 '''
+''' Control rabbit shooting'''
 def shooting():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -163,6 +177,8 @@ def shooting():
                                 (angle, bunny.rotated_position[0] + 32, bunny.rotated_position[1] + 26))
             arrow_sprites_group.add(arrow)
 
+'''生成倒计时 '''
+'''Generate countdown in the upper right corner '''
 def countDown():
     # --倒计时信息
     countdown_text = font.render(str((90000 - pygame.time.get_ticks()) // 60000) + ":" + str(
@@ -174,49 +190,57 @@ def countDown():
 '''主函数'''
 # 游戏主循环, running变量会跟踪游戏是否结束, exitcode变量会跟踪玩家是否胜利.
 def main():
+    #初始化游戏声音，游戏素材，以及全局变量
+    #Initialize game sounds, game materials, and global variables
     initGame()
     initData()
     # 播放背景音乐
+    #Play background music
     pygame.mixer.music.load(cfg.SOUNDS_PATHS['moonlight'])
     pygame.mixer.music.play(-1, 0.0)
     running, exitcode = True, False
-    # 初始化
     global screen,game_images,game_sounds,font,bunny,acc_record,healthvalue,arrow_sprites_group,badguy_sprites_group,badguy,badtimer,badtimer1,clock
     # 游戏主循环, running变量会跟踪游戏是否结束, exitcode变量会跟踪玩家是否胜利.
+    # The main loop, which controls the running of the game
     while running:
+        # --生成背景和倒计时信息
+        # --Generate background and countdown information
         drawBackground()
         countDown()
-        # --按键检测
-        # ----退出与射击
-
+        # --退出与射击
+        # --Control quit and shooting
         shooting()
+        # --更新对象状态
         # --update objects
         updateBunny()
         updateArrow()
         updateBadguy()
-        # --碰撞检测
         arrowHitBadguy()
-
-
         drawObjects()
 
         # --判断游戏是否结束
+        # - Determine whether the game is over
         if pygame.time.get_ticks() >= 90000:
             running, exitcode = False, True
         if healthvalue <= 0:
             running, exitcode = False, False
+
+
         # --更新屏幕
+        # --Refresh the screen
         pygame.display.flip()
         clock.tick(cfg.FPS)
 
     # 计算准确率
+    # Calculate accuracy
     accuracy = acc_record[0] / acc_record[1] * 100 if acc_record[1] > 0 else 0
     accuracy = '%.2f' % accuracy
 
     #显示游戏结束页面
+    # Display endgame interface
     showEndGameInterface(screen, exitcode, accuracy, game_images)
 
-
+'''运行游戏'''
 '''run'''
 if __name__ == '__main__':
     main()
