@@ -21,6 +21,8 @@ class BunnySprite(pygame.sprite.Sprite):
         self.speed = 5
         self.rotated_position = position
     '''移动兔子'''
+    '''Bunny's movement function:
+        Bunny can move left, right , up and down'''
     def move(self, screensize, direction):
         if direction == 'left':
             self.rect.left = max(self.rect.left-self.speed, 0)
@@ -31,6 +33,7 @@ class BunnySprite(pygame.sprite.Sprite):
         elif direction == 'down':
             self.rect.top = min(self.rect.top+self.speed, screensize[1])
     '''画到屏幕上'''
+    '''Let the rabbit show on the screen'''
     def draw(self, screen, mouse_pos):
         angle = math.atan2(mouse_pos[1]-(self.rect.top+32), mouse_pos[0]-(self.rect.left+26))
         image_rotate = pygame.transform.rotate(self.image, 360-angle*57.29)
@@ -40,6 +43,8 @@ class BunnySprite(pygame.sprite.Sprite):
 
 
 '''定义弓箭类'''
+'''Defination of arrow: The arrow can be shot by the bunny
+    and use the update() function to update the status,'''
 class ArrowSprite(pygame.sprite.Sprite):
     def __init__(self, image, position, **kwargs):
         pygame.sprite.Sprite.__init__(self)
@@ -50,6 +55,8 @@ class ArrowSprite(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = position[1:]
         self.speed = 10
     '''更新弓箭'''
+    '''Update the arrow's status, 
+        If the arrow exceeds the screen range, return False, otherwise, return True '''
     def update(self, screensize):
         velx = math.cos(self.angle) * self.speed
         vely = math.sin(self.angle) * self.speed
@@ -61,6 +68,7 @@ class ArrowSprite(pygame.sprite.Sprite):
 
 
 '''定义獾类'''
+'''Defination of badbuy: The badguy can be shot by a bow and arrow, and use the update function to update the status'''
 class BadguySprite(pygame.sprite.Sprite):
     def __init__(self, image, position, **kwargs):
         pygame.sprite.Sprite.__init__(self)
@@ -70,6 +78,8 @@ class BadguySprite(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = position
         self.speed = 7
     '''更新獾'''
+    '''Update the badguys' status.
+        Because badguy can only move from right to left, it only needs to judge whether it exceeds the left boundary.'''
     def update(self):
         self.rect.left -= self.speed
         if self.rect.left < 64:
