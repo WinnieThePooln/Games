@@ -13,9 +13,16 @@ import random
 
 
 '''滑雪者类'''
+'''Skier object  '''
 class SkierClass(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        #The direction of the skier:
+        ''' -2 far left
+            -1 left
+            0 forward
+            1 to the right
+            2 far right '''
         # 滑雪者的朝向(-2到2)
         self.direction = 0
         self.imagepaths = cfg.SKIER_IMAGE_PATHS[:-1]
@@ -23,6 +30,8 @@ class SkierClass(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = [320, 100]
         self.speed = [self.direction, 6-abs(self.direction)*2]
+
+    '''Change the directions of the skier'''
     '''改变滑雪者的朝向. 负数为向左，正数为向右，0为向前'''
     def turn(self, num):
         self.direction += num
@@ -34,14 +43,18 @@ class SkierClass(pygame.sprite.Sprite):
         self.rect.center = center
         self.speed = [self.direction, 6-abs(self.direction)*2]
         return self.speed
+
+    '''The movement of skiers'''
     '''移动滑雪者'''
     def move(self):
         self.rect.centerx += self.speed[0]
         self.rect.centerx = max(20, self.rect.centerx)
         self.rect.centerx = min(620, self.rect.centerx)
+    ''' If a skier hits a tree, set the skier to fall'''
     '''设置为摔倒状态'''
     def setFall(self):
         self.image = pygame.image.load(cfg.SKIER_IMAGE_PATHS[-1])
+    '''Set the skier to stand up'''
     '''设置为站立状态'''
     def setForward(self):
         self.direction = 0
@@ -66,6 +79,7 @@ class ObstacleClass(pygame.sprite.Sprite):
         self.rect.center = self.location
         self.attribute = attribute
         self.passed = False
+    '''Movement'''
     '''移动'''
     def move(self, num):
         self.rect.centery = self.location[1] - num
@@ -103,14 +117,18 @@ def ShowStartInterface(screen, screensize):
     screen.fill((255, 255, 255))
     tfont = pygame.font.Font(cfg.FONTPATH, screensize[0]//5)
     cfont = pygame.font.Font(cfg.FONTPATH, screensize[0]//20)
-    title = tfont.render(u'滑雪游戏', True, (255, 0, 0))
-    content = cfont.render(u'按任意键开始游戏', True, (0, 0, 255))
+    title = tfont.render(u'Ski Game', True, (255, 0, 0))
+    content = cfont.render(u'Press any key to start the game', True, (0, 0, 255))
+    help = cfont.render(u'Use the a and b bottons to control', True, (0, 0, 255))
     trect = title.get_rect()
     trect.midtop = (screensize[0]/2, screensize[1]/5)
     crect = content.get_rect()
     crect.midtop = (screensize[0]/2, screensize[1]/2)
+    hrect = content.get_rect()
+    hrect.midtop = (screensize[0]/2, screensize[1]/1.5)
     screen.blit(title, trect)
     screen.blit(content, crect)
+    screen.blit(help, hrect)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -147,7 +165,7 @@ def main():
     pygame.mixer.music.play(-1)
     # 设置屏幕
     screen = pygame.display.set_mode(cfg.SCREENSIZE)
-    pygame.display.set_caption('滑雪游戏 —— Charles的皮卡丘')
+    pygame.display.set_caption('Ski game-Charles Pikachu')
     # 游戏开始界面
     ShowStartInterface(screen, cfg.SCREENSIZE)
     # 实例化游戏精灵
