@@ -1,10 +1,13 @@
 '''配置文件'''
+'''Configuration  file'''
 import os
 
 
 '''字体'''
+'''Font'''
 FONTPATH = os.path.join(os.getcwd(), 'resources/font/font.ttf')
 '''图片'''
+'''Picture'''
 BULLET_IMAGE_PATHS = {
     'up': os.path.join(os.getcwd(), 'resources/images/bullet/bullet_up.png'),
     'down': os.path.join(os.getcwd(), 'resources/images/bullet/bullet_down.png'),
@@ -83,6 +86,7 @@ OTHER_IMAGE_PATHS = {
     'gamebar': os.path.join(os.getcwd(), 'resources/images/others/gamebar.png')
 }
 '''声音'''
+'''audio'''
 AUDIO_PATHS = {
     'add': os.path.join(os.getcwd(), 'resources/audios/add.wav'),
     'bang': os.path.join(os.getcwd(), 'resources/audios/bang.wav'),
@@ -93,11 +97,13 @@ AUDIO_PATHS = {
     'start': os.path.join(os.getcwd(), 'resources/audios/start.wav')
 }
 '''屏幕'''
+'''Screen'''
 WIDTH = 630
 HEIGHT = 630
 BORDER_LEN = 3
 GRID_SIZE = 24
 PANEL_WIDTH = 150
-TITLE = '坦克大战 —— Charles的皮卡丘'
+TITLE = 'Battle City —— Charles的皮卡丘'
 '''关卡'''
+'''Level'''
 LEVELFILEDIR = os.path.join(os.getcwd(), 'modules/levels')

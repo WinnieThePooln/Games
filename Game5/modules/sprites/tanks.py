@@ -1,10 +1,10 @@
 '''
 Function:
     坦克类
+    Tanks Class
 Author:
     Charles
-微信公众号:
-    Charles的皮卡丘
+
 '''
 import pygame
 import random
@@ -13,24 +13,33 @@ from .bullet import Bullet
 
 
 '''玩家坦克类'''
+'''"Player Tanks"'''
 class PlayerTank(pygame.sprite.Sprite):
     def __init__(self, name, player_tank_image_paths, position, border_len, screensize, direction='up', bullet_image_paths=None, protected_mask_path=None, boom_image_path=None, **kwargs):
         pygame.sprite.Sprite.__init__(self)
         # 玩家1/玩家2
+        # Player1/2
         self.name = name
         # 坦克图片路径
+        # Tank image path
         self.player_tank_image_paths = player_tank_image_paths.get(name)
         # 地图边缘宽度
+        # Map edge width
         self.border_len = border_len
         # 屏幕大小
+        # Screen Size
         self.screensize = screensize
         # 初始坦克方向
+        # Initial tank direction
         self.init_direction = direction
         # 初始位置
+        # Initial Position
         self.init_position = position
         # 子弹图片
+        # Bullet images
         self.bullet_image_paths = bullet_image_paths
         # 保护罩图片路径
+        # Protective cover image path
         self.protected_mask = pygame.image.load(protected_mask_path)
         self.protected_mask_flash_time = 25
         self.protected_mask_flash_count = 0
@@ -96,6 +105,7 @@ class PlayerTank(pygame.sprite.Sprite):
         elif self.rect.bottom > self.screensize[1]-self.border_len:
             self.rect.bottom = self.screensize[1] - self.border_len
         # 为了坦克轮动特效切换图片
+        # Toggle the image for the tank wheel effect
         self.switch_count += 1
         if self.switch_count > self.switch_time:
             self.switch_count = 0
@@ -104,18 +114,21 @@ class PlayerTank(pygame.sprite.Sprite):
     '''更新'''
     def update(self):
         # 坦克子弹冷却更新
+        # Tank bullets cooldown and update
         if self.is_bullet_cooling:
             self.bullet_cooling_count += 1
             if self.bullet_cooling_count >= self.bullet_cooling_time:
                 self.bullet_cooling_count = 0
                 self.is_bullet_cooling = False
         # 无敌状态更新
+        # Invincible status update
         if self.is_protected:
             self.protected_count += 1
             if self.protected_count > self.protected_time:
                 self.is_protected = False
                 self.protected_count = 0
         # 爆炸状态更新
+        # Explosion status update
         if self.booming_flag:
             self.image = self.boom_image
             self.boom_count += 1
@@ -124,6 +137,7 @@ class PlayerTank(pygame.sprite.Sprite):
                 self.booming_flag = False
                 self.reset()
     '''设置坦克方向'''
+    '''Set tank direction'''
     def setDirection(self, direction):
         self.direction = direction
         if self.direction == 'up':
@@ -135,11 +149,14 @@ class PlayerTank(pygame.sprite.Sprite):
         elif self.direction == 'right':
             self.tank_direction_image = self.tank_image.subsurface((0, 144), (96, 48))
     '''射击'''
+    '''Shooting'''
     def shoot(self):
         # 爆炸时无法射击
+        # Can't shoot when it explodes
         if self.booming_flag:
             return False
         # 子弹不在冷却状态时
+        # When the bullet is not in the cooling state
         if not self.is_bullet_cooling:
             self.is_bullet_cooling = True
             if self.tanklevel == 0:
@@ -162,6 +179,7 @@ class PlayerTank(pygame.sprite.Sprite):
             return Bullet(bullet_image_paths=self.bullet_image_paths, screensize=self.screensize, direction=self.direction, position=position, border_len=self.border_len, is_stronger=is_stronger, speed=speed)
         return False
     '''提高坦克等级'''
+    '''Improved tank level'''
     def improveTankLevel(self):
         if self.booming_flag:
             return False
@@ -171,6 +189,7 @@ class PlayerTank(pygame.sprite.Sprite):
         self.image = self.tank_direction_image.subsurface((48*int(self.switch_pointer), 0), (48, 48))
         return True
     '''降低坦克等级'''
+    '''Reduced tank level'''
     def decreaseTankLevel(self):
         if self.booming_flag:
             return False
@@ -184,12 +203,15 @@ class PlayerTank(pygame.sprite.Sprite):
             self.image = self.tank_direction_image.subsurface((48*int(self.switch_pointer), 0), (48, 48))
         return True if self.tanklevel < 0 else False
     '''增加生命值'''
+    '''Increases health'''
     def addLife(self):
         self.num_lifes += 1
     '''设置为无敌状态'''
+    '''Set to invincibility'''
     def setProtected(self):
         self.is_protected = True
     '''画我方坦克'''
+    '''Draw our tanks'''
     def draw(self, screen):
         screen.blit(self.image, self.rect)
         if self.is_protected:
@@ -199,29 +221,38 @@ class PlayerTank(pygame.sprite.Sprite):
                 self.protected_mask_flash_count = 0
             screen.blit(self.protected_mask.subsurface((48*self.protected_mask_pointer, 0), (48, 48)), self.rect)
     '''重置坦克, 重生的时候用'''
+    '''Reset the tank to be used when spawning'''
     def reset(self):
         # 坦克方向
         self.direction = self.init_direction
         # 移动缓冲, 用于避免坦克连续运行不方便调整位置
+        # Movement buffer, to avoid the tank running 
+        # continuously inconvenient to adjust the position
         self.move_cache_time = 4
         self.move_cache_count = 0
         # 是否无敌状态
+        # Unbeatable status
         self.is_protected = False
         self.protected_time = 1500
         self.protected_count = 0
         # 坦克移动速度
+        # Tank movement speed
         self.speed = 8
         # 子弹冷却时间
+        # Bullet cooldown
         self.bullet_cooling_time = 30
         self.bullet_cooling_count = 0
         self.is_bullet_cooling = False
         # 坦克等级
+        # Tank Levels
         self.tanklevel = 0
         # 坦克轮子转动效果
+        # Tank wheel rotation effect
         self.switch_count = 0
         self.switch_time = 1
         self.switch_pointer = False
         # 坦克图片
+        # Tanks pictures
         self.tank_image = pygame.image.load(self.player_tank_image_paths[self.tanklevel]).convert_alpha()
         self.setDirection(self.direction)
         self.image = self.tank_direction_image.subsurface((48*int(self.switch_pointer), 0), (48, 48))
@@ -230,6 +261,7 @@ class PlayerTank(pygame.sprite.Sprite):
 
 
 '''敌方坦克类'''
+'''Enemy Tanks'''
 class EnemyTank(pygame.sprite.Sprite):
     def __init__(self, enemy_tank_image_paths, appear_image_path, position, border_len, screensize, bullet_image_paths=None, food_image_paths=None, boom_image_path=None, **kwargs):
         pygame.sprite.Sprite.__init__(self)
@@ -237,25 +269,31 @@ class EnemyTank(pygame.sprite.Sprite):
         self.border_len = border_len
         self.screensize = screensize
         # 坦克出场特效
+        # Tank entry effects
         appear_image = pygame.image.load(appear_image_path).convert_alpha()
         self.appear_images = [appear_image.subsurface((0, 0), (48, 48)), appear_image.subsurface((48, 0), (48, 48)), appear_image.subsurface((96, 0), (48, 48))]
         # 坦克类型
+        # The tank type
         self.tanktype = random.choice(list(enemy_tank_image_paths.keys()))
         self.enemy_tank_image_paths = enemy_tank_image_paths.get(self.tanktype)
         # 坦克等级
+        # The tank level
         self.tanklevel = random.randint(0, len(self.enemy_tank_image_paths)-2)
         self.food = None
         if (random.random() >= 0.6) and (self.tanklevel == len(self.enemy_tank_image_paths)-2):
             self.tanklevel += 1
             self.food = Foods(food_image_paths=food_image_paths, screensize=self.screensize)
         # 坦克轮子转动效果
+        # Tank wheel rotation effect
         self.switch_count = 0
         self.switch_time = 1
         self.switch_pointer = False
         # 移动缓冲
+        # Mobile buffer
         self.move_cache_time = 4
         self.move_cache_count = 0
         # 坦克图片路径
+        # Tank image path
         self.tank_image = pygame.image.load(self.enemy_tank_image_paths[self.tanklevel]).convert_alpha()
         self.direction = random.choice(['up', 'down', 'left', 'right'])
         self.setDirection(self.direction)
@@ -264,24 +302,30 @@ class EnemyTank(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = position
         self.image = self.appear_images[0]
         # 坦克爆炸图
+        # Tank explosion map
         self.boom_image = pygame.image.load(boom_image_path)
         self.boom_last_time = 5
         self.boom_count = 0
         self.booming_flag = False
         # 子弹冷却时间
+        # Bullet cooldown
         self.bullet_cooling_time = 120 - self.tanklevel * 10
         self.bullet_cooling_count = 0
         self.is_bullet_cooling = False
         # 用于给刚生成的坦克播放出生特效
+        # Used to play birth effects to newly spawn tanks
         self.is_borning = True
         self.borning_left_time = 90
         # 坦克是否可以行动(玩家坦克捡到食物clock可以触发为True)
+        # Tanks can now move (the clock will be True when the player picks up food)
         self.is_keep_still = False
         self.keep_still_time = 500
         self.keep_still_count = 0
         # 坦克移动速度
+        # Speed of tank movement
         self.speed = 10 - int(self.tanktype) * 2
     '''射击'''
+    '''Shooting'''
     def shoot(self):
         if not self.is_bullet_cooling:
             self.is_bullet_cooling = True
@@ -305,9 +349,11 @@ class EnemyTank(pygame.sprite.Sprite):
             return Bullet(bullet_image_paths=self.bullet_image_paths, screensize=self.screensize, direction=self.direction, position=position, border_len=self.border_len, is_stronger=is_stronger, speed=speed)
         return False
     '''实时更新坦克'''
+    '''Updated tanks'''
     def update(self, scene_elems, player_tanks_group, enemy_tanks_group, home):
         data_return = dict()
         # 死后爆炸
+        # After the death of bombing
         if self.booming_flag:
             self.image = self.boom_image
             self.boom_count += 1
@@ -318,6 +364,7 @@ class EnemyTank(pygame.sprite.Sprite):
                 data_return['boomed'] = True
             return data_return
         # 禁止行动时不更新
+        # Do not update when prohibiting action
         if self.is_keep_still:
             self.keep_still_count += 1
             if self.keep_still_count > self.keep_still_time:
@@ -325,6 +372,7 @@ class EnemyTank(pygame.sprite.Sprite):
                 self.keep_still_count = 0
             return data_return
         # 播放出生特效
+        # Play Birth Effects
         if self.is_borning:
             self.borning_left_time -= 1
             if self.borning_left_time < 0:
@@ -348,21 +396,27 @@ class EnemyTank(pygame.sprite.Sprite):
             elif self.borning_left_time <= 90:
                 self.image = self.appear_images[0]
         # 出生后实时更新
+        # Live updates after birth
         else:
             # --坦克移动
+            # -- Tanks Move
             self.move(scene_elems, player_tanks_group, enemy_tanks_group, home)
             # --坦克子弹冷却更新
+            # -- Tank bullets cooldown and update
             if self.is_bullet_cooling:
                 self.bullet_cooling_count += 1
                 if self.bullet_cooling_count >= self.bullet_cooling_time:
                     self.bullet_cooling_count = 0
                     self.is_bullet_cooling = False
             # --能射击就射击
+            # -- Shooting : Unlimited
             data_return['bullet'] = self.shoot()
         return data_return
     '''随机移动坦克'''
+    ''' Move Tanks'''
     def move(self, scene_elems, player_tanks_group, enemy_tanks_group, home):
         # 移动(使用缓冲)
+        # Move
         self.move_cache_count += 1
         if self.move_cache_count < self.move_cache_time:
             return
@@ -378,6 +432,7 @@ class EnemyTank(pygame.sprite.Sprite):
         rect_ori = self.rect
         self.rect = self.rect.move(speed)
         # --碰到场景元素
+        # --Reach Scene Elements
         for key, value in scene_elems.items():
             if key in ['brick_group', 'iron_group', 'river_group']:
                 if pygame.sprite.spritecollide(self, value, False, None):
@@ -392,6 +447,7 @@ class EnemyTank(pygame.sprite.Sprite):
                 if pygame.sprite.spritecollide(self, value, False, None):
                     self.rect = self.rect.move(speed)
         # --碰到玩家坦克
+        # --Reach Player Tank
         if pygame.sprite.spritecollide(self, player_tanks_group, False, None):
             self.rect = rect_ori
             self.direction = random.choice(['up', 'down', 'left', 'right'])
@@ -399,6 +455,7 @@ class EnemyTank(pygame.sprite.Sprite):
             self.switch_count = self.switch_time
             self.move_cache_count = self.move_cache_time
         # --碰到其他敌方坦克
+        # -- Reach Ememy Tank
         if pygame.sprite.spritecollide(self, enemy_tanks_group, False, None):
             self.rect = rect_ori
             self.direction = random.choice(['up', 'down', 'left', 'right'])
@@ -406,6 +463,7 @@ class EnemyTank(pygame.sprite.Sprite):
             self.switch_count = self.switch_time
             self.move_cache_count = self.move_cache_time
         # --碰到玩家大本营
+        # -- Reach Home
         if pygame.sprite.collide_rect(self, home):
             self.rect = rect_ori
             self.direction = random.choice(['up', 'down', 'left', 'right'])
@@ -413,6 +471,7 @@ class EnemyTank(pygame.sprite.Sprite):
             self.switch_count = self.switch_time
             self.move_cache_count = self.move_cache_time
         # --碰到边界
+        # -- Reach Boundary
         if self.rect.left < self.border_len:
             directions = ['up', 'down', 'left', 'right']
             directions.remove(self.direction)
@@ -446,12 +505,14 @@ class EnemyTank(pygame.sprite.Sprite):
             self.move_cache_count = self.move_cache_time
             self.rect.bottom = self.screensize[1] - self.border_len
         # 为了坦克轮动特效切换图片
+        # Toggle the image for the tank wheel effect
         self.switch_count += 1
         if self.switch_count > self.switch_time:
             self.switch_count = 0
             self.switch_pointer = not self.switch_pointer
             self.image = self.tank_direction_image.subsurface((48*int(self.switch_pointer), 0), (48, 48))
     '''设置坦克方向'''
+    '''Set tank direction'''
     def setDirection(self, direction):
         self.direction = direction
         if self.direction == 'up':
@@ -463,6 +524,7 @@ class EnemyTank(pygame.sprite.Sprite):
         elif self.direction == 'right':
             self.tank_direction_image = self.tank_image.subsurface((0, 144), (96, 48))
     '''降低坦克等级'''
+    '''Reduced tank level'''
     def decreaseTankLevel(self):
         if self.booming_flag:
             return False

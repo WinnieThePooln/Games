@@ -3,13 +3,12 @@ Function:
     场景元素类
 Author:
     Charles
-微信公众号:
-    Charles的皮卡丘
+
 '''
 import pygame
 
 
-'''砖墙'''
+'''Brick Wall'''
 class Brick(pygame.sprite.Sprite):
     def __init__(self, position, imagepath, **kwargs):
         pygame.sprite.Sprite.__init__(self)
@@ -18,7 +17,7 @@ class Brick(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = position
 
 
-'''铁墙'''
+'''Iron Wall'''
 class Iron(pygame.sprite.Sprite):
     def __init__(self, position, imagepath, **kwargs):
         pygame.sprite.Sprite.__init__(self)
@@ -27,7 +26,7 @@ class Iron(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = position
 
 
-'''冰'''
+'''Ice'''
 class Ice(pygame.sprite.Sprite):
     def __init__(self, position, imagepath, **kwargs):
         pygame.sprite.Sprite.__init__(self)
@@ -39,7 +38,7 @@ class Ice(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = position
 
 
-'''河流'''
+'''River'''
 class River(pygame.sprite.Sprite):
     def __init__(self, position, imagepath, **kwargs):
         pygame.sprite.Sprite.__init__(self)
@@ -51,7 +50,7 @@ class River(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = position
 
 
-'''树'''
+'''Tree'''
 class Tree(pygame.sprite.Sprite):
     def __init__(self, position, imagepath, **kwargs):
         pygame.sprite.Sprite.__init__(self)

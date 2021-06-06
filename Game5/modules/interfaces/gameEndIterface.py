@@ -1,22 +1,24 @@
 '''
 Function:
     游戏结束界面
+    The end of the interface
 Author:
     Charles
-微信公众号:
-    Charles的皮卡丘
+
 '''
 import sys
 import pygame
 
 
 '''游戏结束界面'''
+'''The end of the interface'''
 def gameEndIterface(screen, cfg, is_win=True):
     background_img = pygame.image.load(cfg.OTHER_IMAGE_PATHS.get('background'))
     color_white = (255, 255, 255)
     color_red = (255, 0, 0)
     font = pygame.font.Font(cfg.FONTPATH, cfg.WIDTH//12)
     # 游戏失败图
+    # Failure Pictures
     gameover_img = pygame.image.load(cfg.OTHER_IMAGE_PATHS.get('gameover'))
     gameover_img = pygame.transform.scale(gameover_img, (150, 75))
     gameover_img_rect = gameover_img.get_rect()
@@ -25,6 +27,8 @@ def gameEndIterface(screen, cfg, is_win=True):
     gameover_flash_count = 0
     gameover_show_flag = True
     # 游戏胜利与否的提示
+    # A hint of whether the game is winning or not.
+
     if is_win:
         font_render = font.render('Congratulations, You win!', True, color_white)
     else:
@@ -32,6 +36,7 @@ def gameEndIterface(screen, cfg, is_win=True):
     font_rect = font_render.get_rect()
     font_rect.centerx, font_rect.centery = cfg.WIDTH/2, cfg.HEIGHT/3
     # 用于选择退出或重新开始
+    # Used to opt out or restart
     tank_cursor = pygame.image.load(cfg.PLAYER_TANK_IMAGE_PATHS.get('player1')[0]).convert_alpha().subsurface((0, 144), (48, 48))
     tank_rect = tank_cursor.get_rect()
     restart_render_white = font.render('RESTART', True, color_white)
@@ -44,6 +49,7 @@ def gameEndIterface(screen, cfg, is_win=True):
     quit_rect.left, quit_rect.top = cfg.WIDTH/2.4, cfg.HEIGHT/1.6
     is_quit_game = False
     # 主循环
+    # main loop
     clock = pygame.time.Clock()
     while True:
         for event in pygame.event.get():

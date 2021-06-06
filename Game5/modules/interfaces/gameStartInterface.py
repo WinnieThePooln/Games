@@ -1,16 +1,17 @@
 '''
 Function:
     游戏开始界面
+    Game Start Screen
 Author:
     Charles
-微信公众号:
-    Charles的皮卡丘
+
 '''
 import sys
 import pygame
 
 
 '''游戏开始界面'''
+'''Game Start Screen'''
 def gameStartInterface(screen, cfg):
     background_img = pygame.image.load(cfg.OTHER_IMAGE_PATHS.get('background'))
     color_white = (255, 255, 255)
@@ -23,6 +24,7 @@ def gameStartInterface(screen, cfg):
     tank_cursor = pygame.image.load(cfg.PLAYER_TANK_IMAGE_PATHS.get('player1')[0]).convert_alpha().subsurface((0, 144), (48, 48))
     tank_rect = tank_cursor.get_rect()
     # 玩家数量选择
+    # Number of players selection
     player_render_white = font.render('1 PLAYER', True, color_white)
     player_render_red = font.render('1 PLAYER', True, color_red)
     player_rect = player_render_white.get_rect()
@@ -32,6 +34,7 @@ def gameStartInterface(screen, cfg):
     players_rect = players_render_white.get_rect()
     players_rect.left, players_rect.top = cfg.WIDTH/2.8, cfg.HEIGHT/2
     # 游戏提示
+    # The game prompts
     game_tip = font.render('press <Enter> to start', True, color_white)
     game_tip_rect = game_tip.get_rect()
     game_tip_rect.centerx, game_tip_rect.top = cfg.WIDTH/2, cfg.HEIGHT/1.4
@@ -39,6 +42,7 @@ def gameStartInterface(screen, cfg):
     game_tip_flash_count = 0
     game_tip_show_flag = True
     # 主循环
+    # main loop
     clock = pygame.time.Clock()
     is_dual_mode = False
     while True:

@@ -3,14 +3,14 @@ Function:
     食物类
 Author:
     Charles
-微信公众号:
-    Charles的皮卡丘
+
 '''
 import pygame
 import random
 
 
 '''食物类. 用于获得奖励'''
+'''Food class: Used to earn reawards'''
 class Foods(pygame.sprite.Sprite):
     def __init__(self, food_image_paths, screensize, **kwargs):
         pygame.sprite.Sprite.__init__(self)

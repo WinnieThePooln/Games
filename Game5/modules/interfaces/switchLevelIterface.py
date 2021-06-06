@@ -1,16 +1,17 @@
 '''
 Function:
     关卡切换界面
+    Level switching interface
 Author:
     Charles
-微信公众号:
-    Charles的皮卡丘
+
 '''
 import sys
 import pygame
 
 
 '''关卡切换界面'''
+'''Level switching interface'''
 def switchLevelIterface(screen, cfg, level_next=1):
     background_img = pygame.image.load(cfg.OTHER_IMAGE_PATHS.get('background'))
     color_white = (255, 255, 255)
@@ -21,10 +22,12 @@ def switchLevelIterface(screen, cfg, level_next=1):
     logo_rect = logo_img.get_rect()
     logo_rect.centerx, logo_rect.centery = cfg.WIDTH/2, cfg.HEIGHT//4
     # 游戏加载提示
+    # Game Loading Tips
     font_render = font.render('Loading game data, You will enter Level-%s' % level_next, True, color_white)
     font_rect = font_render.get_rect()
     font_rect.centerx, font_rect.centery = cfg.WIDTH/2, cfg.HEIGHT/2
     # 游戏加载进度条
+    # Game loading progress bar
     gamebar = pygame.image.load(cfg.OTHER_IMAGE_PATHS.get('gamebar')).convert_alpha()
     gamebar_rect = gamebar.get_rect()
     gamebar_rect.centerx, gamebar_rect.centery = cfg.WIDTH/2, cfg.HEIGHT/1.4
@@ -33,8 +36,10 @@ def switchLevelIterface(screen, cfg, level_next=1):
     tank_rect.left = gamebar_rect.left
     tank_rect.centery = gamebar_rect.centery
     # 加载所需时间
+    # Load time
     load_time_left = gamebar_rect.right - tank_rect.right + 8
     # 主循环
+    # main loop
     clock = pygame.time.Clock()
     while True:
         for event in pygame.event.get():
