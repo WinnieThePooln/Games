@@ -11,6 +11,7 @@ import pygame
 
 
 '''定义兔子类'''
+'''Definition of bunny: The bunny can move and shoot with a bow and arrow '''
 class BunnySprite(pygame.sprite.Sprite):
     def __init__(self, image, position, **kwargs):
         pygame.sprite.Sprite.__init__(self)
