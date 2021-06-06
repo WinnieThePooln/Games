@@ -343,6 +343,7 @@ class GameLevel():
         player1_operate_tip_rect = player1_operate_tip.get_rect()
         player1_operate_tip_rect.left, player1_operate_tip_rect.top = self.width+5, self.height*6/30
         screen.blit(player1_operate_tip, player1_operate_tip_rect)
+
         # 玩家二操作提示
         # Player 2 operation prompts
         player2_operate_tip = self.font.render('Operate-P2:', True, color_white)
@@ -403,11 +404,21 @@ class GameLevel():
         game_level_tip_rect = game_level_tip.get_rect()
         game_level_tip_rect.left, game_level_tip_rect.top = self.width+5, self.height*23/30
         screen.blit(game_level_tip, game_level_tip_rect)
+        game_level_tip = self.font.render('Bullet are', True, color_white)
+        game_level_tip_rect = game_level_tip.get_rect()
+        game_level_tip_rect.left, game_level_tip_rect.top = self.width+5, self.height*24/30
+        screen.blit(game_level_tip, game_level_tip_rect)
+        game_level_tip = self.font.render('Infinite', True, color_white)
+        game_level_tip_rect = game_level_tip.get_rect()
+        game_level_tip_rect.left, game_level_tip_rect.top = self.width+5, self.height*25/30
+        screen.blit(game_level_tip, game_level_tip_rect)
+
+
         # 剩余敌人数量
         # Number of remaining enemies
         remaining_enemy_tip = self.font.render('Remain Enemy: %s' % self.total_enemy_num, True, color_white)
         remaining_enemy_tip_rect = remaining_enemy_tip.get_rect()
-        remaining_enemy_tip_rect.left, remaining_enemy_tip_rect.top = self.width+5, self.height*24/30
+        remaining_enemy_tip_rect.left, remaining_enemy_tip_rect.top = self.width+5, self.height*27/30
         screen.blit(remaining_enemy_tip, remaining_enemy_tip_rect)
     '''保护大本营'''
     '''Protect Base Camp'''

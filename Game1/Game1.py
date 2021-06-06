@@ -3,7 +3,11 @@ Function:
     Bunnies and Badgers
 Author: 
     Charles
+<<<<<<< HEAD
 Test 11111
+=======
+Test ttttttttttttt
+>>>>>>> jiahui
 '''
 import sys
 import cfg
