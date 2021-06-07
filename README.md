@@ -1,5 +1,16 @@
+# CS 410/510 Code Reading & Review, Spring 2021 Course Project
+```
+We use this repo as a code reading and review project.
+We will conduct a code review of this repo.
+We will simulate the problems encountered in actual development,such as create issues, create PR , comments on PR.
+Since there are too many games in this repo, the code style of each game is different, so we will select a few games for code review.
+```
+
+# Team Members
+#### Jiahui Zhang
+#### Xiaoran Ge
+
 # Games
-#cs410p team projectgit
 ```
 Create interesting games by pure python.
 You can star this repository to keep track of the project if it's helpful for you, thank you for your support.

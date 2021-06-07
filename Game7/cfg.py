@@ -1,17 +1,21 @@
+'''cfg file'''
 '''配置文件'''
 import os
 
-
+'''screen size'''
 '''屏幕大小'''
 SCREENSIZE = (600, 150)
 '''FPS'''
 FPS = 60
+
+'''audio paths'''
 '''音频素材路径'''
 AUDIO_PATHS = {
     'die': os.path.join(os.getcwd(), 'resources/audios/die.wav'),
     'jump': os.path.join(os.getcwd(), 'resources/audios/jump.wav'),
     'point': os.path.join(os.getcwd(), 'resources/audios/point.wav')
 }
+'''image paths'''
 '''图片素材路径'''
 IMAGE_PATHS = {
     'cacti': [
@@ -29,6 +33,7 @@ IMAGE_PATHS = {
     'ptera': os.path.join(os.getcwd(), 'resources/images/ptera.png'),
     'replay': os.path.join(os.getcwd(), 'resources/images/replay.png')
 }
+'''background colors'''
 '''背景颜色'''
 BACKGROUND_COLOR = (235, 235, 235)
 BLACK = (0, 0, 0)

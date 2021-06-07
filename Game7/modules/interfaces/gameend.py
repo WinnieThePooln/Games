@@ -9,7 +9,7 @@ Author:
 import sys
 import pygame
 
-
+'''Game end interface'''
 '''游戏结束界面'''
 def GameEndInterface(screen, cfg):
     replay_image = pygame.image.load(cfg.IMAGE_PATHS['replay'])
