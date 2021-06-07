@@ -13,6 +13,10 @@ from ..sprites import Dinosaur
 
 '''游戏开始界面'''
 def GameStartInterface(screen, sounds, cfg):
+    font=pygame.font.SysFont('arial', 15)
+    help = font.render(u'Use the UP and DOWN bottons to control, press UP to start', True, (0, 0, 253))
+    hrect = help.get_rect()
+    hrect.midtop = (200, 15)
     dino = Dinosaur(cfg.IMAGE_PATHS['dino'])
     ground = pygame.image.load(cfg.IMAGE_PATHS['ground']).subsurface((0, 0), (83, 19))
     rect = ground.get_rect()
@@ -31,6 +35,7 @@ def GameStartInterface(screen, sounds, cfg):
         dino.update()
         screen.fill(cfg.BACKGROUND_COLOR)
         screen.blit(ground, rect)
+        screen.blit(help, hrect)
         dino.draw(screen)
         pygame.display.update()
         clock.tick(cfg.FPS)
