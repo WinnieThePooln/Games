@@ -15,16 +15,20 @@ from modules import *
 
 '''main'''
 def main(highest_score):
+    #Initalize game
     # 游戏初始化
     pygame.init()
     screen = pygame.display.set_mode(cfg.SCREENSIZE)
     pygame.display.set_caption('T-Rex Rush —— Charles的皮卡丘')
+    # Import sound file
     # 导入所有声音文件
     sounds = {}
     for key, value in cfg.AUDIO_PATHS.items():
         sounds[key] = pygame.mixer.Sound(value)
+    #Game start interface
     # 游戏开始界面
     GameStartInterface(screen, sounds, cfg)
+    # Initalie data and objects
     # 定义一些游戏中必要的元素和变量
     score = 0
     score_board = Scoreboard(cfg.IMAGE_PATHS['numbers'], position=(534, 15), bg_color=cfg.BACKGROUND_COLOR)
@@ -37,6 +41,7 @@ def main(highest_score):
     ptera_sprites_group = pygame.sprite.Group()
     add_obstacle_timer = 0
     score_timer = 0
+    # Main loop
     # 游戏主循环
     clock = pygame.time.Clock()
     while True:
@@ -52,9 +57,11 @@ def main(highest_score):
             elif event.type == pygame.KEYUP and event.key == pygame.K_DOWN:
                 dino.unduck()
         screen.fill(cfg.BACKGROUND_COLOR)
+        # -- Add random cloud
         # --随机添加云
         if len(cloud_sprites_group) < 5 and random.randrange(0, 300) == 10:
             cloud_sprites_group.add(Cloud(cfg.IMAGE_PATHS['cloud'], position=(cfg.SCREENSIZE[0], random.randrange(30, 75))))
+        # -- Add random obstacle:Cactus and Ptera
         # --随机添加仙人掌/飞龙
         add_obstacle_timer += 1
         if add_obstacle_timer > random.randrange(50, 150):
@@ -65,6 +72,7 @@ def main(highest_score):
             else:
                 position_ys = [cfg.SCREENSIZE[1]*0.82, cfg.SCREENSIZE[1]*0.75, cfg.SCREENSIZE[1]*0.60, cfg.SCREENSIZE[1]*0.20]
                 ptera_sprites_group.add(Ptera(cfg.IMAGE_PATHS['ptera'], position=(600, random.choice(position_ys))))
+        # --Update objects
         # --更新游戏元素
         dino.update()
         ground.update()
@@ -88,6 +96,7 @@ def main(highest_score):
                     item.speed -= 1
                 for item in ptera_sprites_group:
                     item.speed -= 1
+        # --Determine whether the dinosaur hit an obstacle
         # --碰撞检测
         for item in cactus_sprites_group:
             if pygame.sprite.collide_mask(dino, item):
@@ -95,6 +104,7 @@ def main(highest_score):
         for item in ptera_sprites_group:
             if pygame.sprite.collide_mask(dino, item):
                 dino.die(sounds)
+        # --Draw game objects on the screen
         # --将游戏元素画到屏幕上
         dino.draw(screen)
         ground.draw(screen)
@@ -105,17 +115,21 @@ def main(highest_score):
         highest_score_board.set(highest_score)
         score_board.draw(screen)
         highest_score_board.draw(screen)
+        # --Update screen
         # --更新屏幕
         pygame.display.update()
         clock.tick(cfg.FPS)
+        # --Game over
         # --游戏是否结束
         if dino.is_dead:
             break
+    # Game end interface
     # 游戏结束界面
     return GameEndInterface(screen, cfg), highest_score
 
 
 '''run'''
+'''运行游戏'''
 if __name__ == '__main__':
     highest_score = 0
     while True:

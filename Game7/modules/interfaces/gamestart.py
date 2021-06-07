@@ -10,7 +10,7 @@ import sys
 import pygame
 from ..sprites import Dinosaur
 
-
+'''Game start interface'''
 '''游戏开始界面'''
 def GameStartInterface(screen, sounds, cfg):
     font=pygame.font.SysFont('arial', 15)
