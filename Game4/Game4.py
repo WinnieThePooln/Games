@@ -155,6 +155,7 @@ def updateFrame(screen, obstacles, skier, score):
     showScore(screen, score)
     pygame.display.update()
 
+'''Global varies'''
 global screen,skier,speed,obstacles0,obstacles1,obstaclesflag,obstacles,clock,distance,score,speed
 '''Initialize the game'''
 def initGame():
